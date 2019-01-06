@@ -1,6 +1,5 @@
 package com.sl.file.controller;
 
-import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +15,7 @@ public class InnerIconController extends FileLoader {
 	private IconService iconService;
 	
 	@RequestMapping("/{fileId}")
-	public String get(@PathVariable Long fileId) throws IOException{
+	public String get(@PathVariable Long fileId) {
 		Assert.notNull(fileId, "fileId should not be null or empty");
 		
 		SlFile file = this.iconService.getFile(fileId);

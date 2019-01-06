@@ -33,11 +33,7 @@ public class IconController extends FileLoader {
 			Assert.notNull(fileId, "fileId should not be null or empty");
 			
 			SlFile file = this.iconService.getFile(fileId);
-			if(file == null){
-				response.setStatus(HttpStatus.SC_NOT_FOUND);
-			}
-			
-			if(!this.downloadFile(file, request, response)){
+			if(file == null || !this.downloadContent(file, request, response)){
 				response.setStatus(HttpStatus.SC_NOT_FOUND);
 			}
 			
@@ -46,7 +42,7 @@ public class IconController extends FileLoader {
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, consumes={"multipart/form-data"})
+	@RequestMapping(method = RequestMethod.POST)
 	public ApiResult upload(@RequestParam("file") MultipartFile file, FilterHttpServletRequest request, HttpServletResponse response){
 		try{
 			if (file != null && !file.isEmpty() && file.getSize() > 0) {
@@ -54,7 +50,11 @@ public class IconController extends FileLoader {
 					return ApiResult.error(ApiError.ARGUMENT_ERROR, "max file size 1024KB");
 				}
 				
-				SlFile saved = this.iconService.saveFile(file, request.getToken(), request.getServletContext().getRealPath("/"), false);
+				String filePrefix = this.getFilePrefix(file, request);
+				String fileNm = this.getFileName(file);
+				String storagePath = this.getFileStoragePath(filePrefix, fileNm);
+				
+				SlFile saved = this.iconService.saveFile(file, request.getToken(), filePrefix, fileNm, storagePath, false);
 				if(saved == null){
 					return ApiResult.error(ApiError.INTERNAL_ERROR);
 					

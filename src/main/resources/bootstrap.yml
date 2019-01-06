@@ -1,5 +1,5 @@
 server:
-  port: 61001
+  port: 61002
 
 eureka:
   instance:
@@ -82,8 +82,6 @@ spring:
     #prefix: classpath:/templates/
     suffix: .html
     encoding: UTF-8
-    #servlet:
-      #content-type: application/ce-html+xml
   # file upload
   servlet:
     multipart:
@@ -132,6 +130,3 @@ spring:
       min-idle: 0
 
 mybatis.configuration.mapUnderscoreToCamelCase: true
-
-salon:
-  file: http://localhost:8080/file
