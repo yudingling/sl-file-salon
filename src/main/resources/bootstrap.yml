@@ -136,5 +136,6 @@ mybatis.configuration.mapUnderscoreToCamelCase: true
 
 file:
   tokenRedisPrefix: salon:tk_
+  userIdFieldInToken: userId
   # size in KB
   iconMaxSize: 1024
