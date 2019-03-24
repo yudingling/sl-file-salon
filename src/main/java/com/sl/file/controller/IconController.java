@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,9 @@ public class IconController extends FileLoader {
 	@Autowired
 	private IconService iconService;
 	
+	@Value("${file.iconMaxSize}")
+	private Integer iconMaxSize;
+	
 	@RequestMapping("/{fileId}")
 	public void get(@PathVariable Long fileId, FilterHttpServletRequest request, HttpServletResponse response) throws IOException{
 		try{
@@ -46,8 +50,8 @@ public class IconController extends FileLoader {
 	public ApiResult upload(@RequestParam("file") MultipartFile file, FilterHttpServletRequest request, HttpServletResponse response){
 		try{
 			if (file != null && !file.isEmpty() && file.getSize() > 0) {
-				if(file.getSize() / 1024 > 1024){
-					return ApiResult.error(ApiError.ARGUMENT_ERROR, "max file size 1024KB");
+				if(file.getSize() / 1024 > this.iconMaxSize){
+					return ApiResult.error(ApiError.ARGUMENT_ERROR, String.format("max icon file size %dKB", this.iconMaxSize));
 				}
 				
 				String filePrefix = this.getFilePrefix(file, request);

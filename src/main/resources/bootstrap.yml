@@ -133,3 +133,8 @@ spring:
       min-idle: 0
 
 mybatis.configuration.mapUnderscoreToCamelCase: true
+
+file:
+  tokenRedisPrefix: salon:tk_
+  # size in KB
+  iconMaxSize: 1024
