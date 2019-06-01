@@ -2,9 +2,14 @@ package com.sl.file.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import tk.mybatis.mapper.entity.Example;
 
 import com.sl.common.model.SToken;
 import com.sl.common.model.db.SlFile;
@@ -20,6 +25,13 @@ public class IconService {
 	
 	public SlFile getFile(Long fileId){
 		return this.fileMapper.selectByPrimaryKey(fileId);
+	}
+	
+	public List<SlFile> getFiles(Set<Long> fileIds){
+		Example example = new Example(SlFile.class);
+		example.createCriteria().andIn("fileId", fileIds);
+		
+		return this.fileMapper.selectByExample(example);
 	}
 	
 	public SlFile saveFile(MultipartFile file, SToken token, String filePfx, String fileNm, String storagePath, boolean isPrivate) throws IOException{
